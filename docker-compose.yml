@@ -1,0 +1,27 @@
+services:
+  backend:
+    build: .
+    container_name: hbc_shona_backend
+    command: uv run uvicorn src.main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./morena-1.5b-instruct-Q4_K_M.gguf:/app/morena-1.5b-instruct-Q4_K_M.gguf
+      - ./chroma_db:/app/chroma_db
+    devices:
+      - /dev/dri:/dev/dri  # Passthrough GPU render nodes for Vulkan acceleration
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+
+  frontend:
+    build: .
+    container_name: hbc_shona_frontend
+    command: uv run streamlit run src/frontend.py --server.address 0.0.0.0 --server.port 8501
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://backend:8000/api/v1/tutor
+    depends_on:
+      - backend
+    restart: unless-stopped
