@@ -10,9 +10,12 @@ KNOWLEDGE_BASE_DIR = BASE_DIR / "knowledgebase"
 DB_DIR = BASE_DIR / "chroma_db"
 
 def ingest_documents():
-    # 1. Initialize the offline embedding model
-    print("Loading embedding model...")
-    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+    print("Loading embedding model on CPU...")
+    # Force CPU execution to bypass the legacy CUDA sm_50 mismatch
+    embeddings = HuggingFaceEmbeddings(
+        model_name="all-MiniLM-L6-v2",
+        model_kwargs={'device': 'cpu'} 
+    )
     
     # 2. Load all PDFs from the knowledgebase folder
     documents = []

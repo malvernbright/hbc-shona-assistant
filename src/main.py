@@ -3,7 +3,8 @@ from pydantic import BaseModel, Field
 from langchain_core.prompts import PromptTemplate
 from langchain_community.llms import LlamaCpp
 from langchain_chroma import Chroma
-from langchain_community.embeddings import HuggingFaceEmbeddings
+# from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from pathlib import Path
 import os
 
@@ -13,8 +14,12 @@ DB_DIR = str(BASE_DIR / "chroma_db")
 
 app = FastAPI(title="Shona HBC Assistant API")
 
-print("Loading Embedding Model & Vector Store...")
-embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+# Update the initialization to force CPU:
+print("Loading Embedding Model on CPU & Vector Store...")
+embeddings = HuggingFaceEmbeddings(
+    model_name="all-MiniLM-L6-v2",
+    model_kwargs={'device': 'cpu'}
+)
 vectorstore = Chroma(persist_directory=DB_DIR, embedding_function=embeddings)
 retriever = vectorstore.as_retriever(search_kwargs={"k": 2}) # Retrieve top 2 most relevant chunks
 

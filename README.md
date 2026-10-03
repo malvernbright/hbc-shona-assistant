@@ -26,6 +26,19 @@ uv add streamlit requests
 uv run python src/ingest.py
 ```
 
+### Run backend
+
+```bash
+uv run uvicorn src.main:app
+```
+
+
+### Run streamlit app
+
+```bash
+uv run streamlit run src/frontend.py
+```
+
 ### 2. Build and launch the containerized app
 
 ```bash

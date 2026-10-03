@@ -8,16 +8,26 @@ authors = [
 ]
 requires-python = ">=3.12"
 dependencies = [
+    "chromadb>=1.5.9",
     "fastapi>=0.141.1",
     "huggingface-hub>=1.32.0",
     "langchain>=1.4.1",
+    "langchain-chroma>=1.1.0",
     "langchain-community>=0.4.2",
+    "langchain-huggingface>=1.2.2",
     "llama-cpp-python>=0.3.35",
+    "pypdf>=6.19.0",
+    "requests>=2.34.2",
+    "sentence-transformers>=6.1.0",
+    "streamlit>=1.65.0",
     "uvicorn>=0.53.0",
 ]
 
 [project.scripts]
-hbc-shona-assistant = "hbc_shona_assistant:main"
+hbc-shona-assistant = "src:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
 
 [build-system]
 requires = ["uv_build>=0.12.15,<0.13.0"]
